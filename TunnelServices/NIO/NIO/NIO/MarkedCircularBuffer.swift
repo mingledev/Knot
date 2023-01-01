@@ -23,7 +23,7 @@ public struct MarkedCircularBuffer<Element>: CustomStringConvertible {
 
     /// Create a new instance.
     ///
-    /// - paramaters:
+    /// - parameters:
     ///     - initialCapacity: The initial capacity of the internal storage.
     @inlinable
     public init(initialCapacity: Int) {
@@ -41,12 +41,12 @@ public struct MarkedCircularBuffer<Element>: CustomStringConvertible {
     /// Removes the first element from the buffer.
     @inlinable
     public mutating func removeFirst() -> Element {
+        assert(self._buffer.count > 0)
         return self.popFirst()!
     }
 
     @inlinable
     public mutating func popFirst() -> Element? {
-        assert(self._buffer.count > 0)
         if let markedIndexOffset = self._markedIndexOffset {
             if markedIndexOffset > 0 {
                 self._markedIndexOffset = markedIndexOffset - 1
@@ -161,6 +161,15 @@ extension MarkedCircularBuffer: Collection, MutableCollection {
         get {
             return self._buffer[bounds]
         }
+        set {
+            var index = bounds.lowerBound
+            var iterator = newValue.makeIterator()
+            while let newElement = iterator.next(), index != bounds.upperBound {
+                self._buffer[index] = newElement
+                formIndex(after: &index)
+            }
+            precondition(iterator.next() == nil && index == bounds.upperBound)
+        }
     }
 }
 
@@ -181,3 +190,5 @@ extension MarkedCircularBuffer: RandomAccessCollection {
     }
 
 }
+
+extension MarkedCircularBuffer: Sendable where Element: Sendable {}

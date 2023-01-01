@@ -184,9 +184,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69A0D28D1DD598F200227353 /* Build configuration list for PBXNativeTarget "AxLogger" */;
 			buildPhases = (
+				69A0D2821DD598F200227353 /* Headers */,
 				69A0D2801DD598F200227353 /* Sources */,
 				69A0D2811DD598F200227353 /* Frameworks */,
-				69A0D2821DD598F200227353 /* Headers */,
 				69A0D2831DD598F200227353 /* Resources */,
 			);
 			buildRules = (
